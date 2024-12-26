@@ -10,6 +10,7 @@ vars:
   APP_NAME: "grpcmd"
   BIN_DIR: "bin"
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9245}}'
+  UseTypescript: true
 
 tasks:
   build:
