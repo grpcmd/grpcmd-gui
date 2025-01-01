@@ -16,27 +16,27 @@ jobs:
         build:
           - name: 'grpcmd'
             platform:  'linux/amd64'
-            target-platform-arch: 'amd64'
+            platform-arch: 'amd64'
             os: 'ubuntu-latest'
           - name: 'grpcmd'
             platform:  'linux/arm64'
-            target-platform-arch: 'arm64'
+            platform-arch: 'arm64'
             os: 'ubuntu-latest'
           - name: 'grpcmd'
             platform:  'windows/amd64'
-            target-platform-arch: 'amd64'
+            platform-arch: 'amd64'
             os: 'windows-latest'
           - name: 'grpcmd'
             platform:  'windows/arm64'
-            target-platform-arch: 'arm64'
+            platform-arch: 'arm64'
             os: 'windows-latest'
           - name: 'grpcmd'
             platform:  'darwin/amd64'
-            target-platform-arch: 'amd64'
+            platform-arch: 'amd64'
             os: 'macos-latest'
           - name: 'grpcmd'
             platform:  'darwin/arm64'
-            target-platform-arch: 'arm64'
+            platform-arch: 'arm64'
             os: 'macos-latest'
 
     runs-on: ${{ matrix.build.os }}
@@ -52,6 +52,7 @@ jobs:
         with:
           build-name: ${{ matrix.build.name }}
           build-platform: ${{ matrix.build.platform }}
+          build-platform-arch: ${{ matrix.build.platform-arch }}
           package: true
           go-version: '1.23'
           sign-macos-apple-id: ${{ secrets.APPLE_ID }}

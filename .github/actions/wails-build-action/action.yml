@@ -28,6 +28,10 @@ inputs:
     description: "Platform to build for"
     required: false
     default: "darwin/universal"
+  build-platform-arch:
+    description: "Architecture to build for"
+    required: false
+    default: "amd64"
   wails-version:
     description: "Wails version to use"
     required: false
@@ -317,7 +321,7 @@ runs:
     - uses: actions/upload-artifact@v4
       if: inputs.package == 'true'
       with:
-        name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.target-platform-arch}} ${{inputs.build-name}}
+        name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.build-platform-arch}} ${{inputs.build-name}}
         path: |
           */publish/
           *\publish\*
