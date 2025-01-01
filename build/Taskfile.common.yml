@@ -49,7 +49,8 @@ tasks:
     cmds:
       - wails3 generate bindings -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}}
       # Fix typescript errors.
-      - "sed '-i' '' '-e' 's|($result) => {|($result: any) => {|g' ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts"
+      - "sed -i.bak 's|($result) => {|($result: any) => {|g' ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts"
+      - rm ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts.bak
 
   generate:icons:
     summary: Generates Windows `.ico` and Mac `.icns` files from an image
