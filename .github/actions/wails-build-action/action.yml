@@ -217,6 +217,7 @@ runs:
       run: |
         mkdir bin/publish
         tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-linux-amd64.tar.gz" 'bin/${{ inputs.build-name }}'
+        mv 'bin/${{ inputs.build-name }}-x86_64.AppImage' 'bin/publish/${{ inputs.build-name }}-gui-linux-x86_64.AppImage' 
         echo a
         ls
         echo b
@@ -251,12 +252,12 @@ runs:
         ls bin
         echo c
         ls bin/publish
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: inputs.package == 'true'
       with:
-        name: Wails Build ${{runner.os}} ${{inputs.build-name}}
+        name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.build-name}}
         path: |
-          bin/publish/
+          bin/publish/*
           bin\publish\*
     # - name: Release
     #   uses: softprops/action-gh-release@v2
