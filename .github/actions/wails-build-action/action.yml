@@ -217,6 +217,9 @@ runs:
       run: |
         mkdir bin/publish
         tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-linux-amd64.tar.gz" 'bin/${{ inputs.build-name }}'
+        ls
+        ls bin
+        ls bin/publish
     - name: Prepare Windows Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/amd64'
@@ -224,7 +227,10 @@ runs:
       run: |
         mkdir bin/publish
         Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui-windows-amd64.zip'.replace(' ', '-')
-        mv 'bin/${{ inputs.build-name }}-amd64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui-windows-amd64-installer.exe'.replace(' ', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-amd64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui-windows-amd64-installer.exe'.replace(' ', '-')
+        ls
+        ls bin
+        ls bin/publish
     - name: Prepare macOS Release Builds
       shell: bash
       if: inputs.build-platform == 'darwin/universal'
@@ -233,6 +239,9 @@ runs:
         mkdir bin/publish
         mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-macOS-universal.app.zip"
         mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-macOS-universal-installer.dmg"
+        ls
+        ls bin
+        ls bin/publish
     - uses: actions/upload-artifact@v3
       if: inputs.package == 'true'
       with:

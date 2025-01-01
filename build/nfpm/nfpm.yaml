@@ -21,7 +21,7 @@ contents:
     dst: "/usr/local/bin/grpcmd"
   - src: "./build/appicon.png"
     dst: "/usr/share/icons/hicolor/128x128/apps/grpcmd.png"
-  - src: "./build/grpcmd.desktop"
+  - src: "./build/appimage/grpcmd.desktop"
     dst: "/usr/share/applications/grpcmd.desktop"
 
 depends:
