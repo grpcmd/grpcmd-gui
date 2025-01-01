@@ -153,24 +153,44 @@ runs:
       shell: bash
     # Building step
     - name: Build App
-      if: inputs.build == 'true' && runner.os == 'macOS'
+      if: inputs.build == 'true' && inputs.build-platform == 'darwin/amd64'
       working-directory: ${{ inputs.app-working-directory }}
       run: wails3 package
       shell: bash
     - name: Build App
-      if: inputs.build == 'true' &&  runner.os == 'Linux'
+      if: inputs.build == 'true' && inputs.build-platform == 'linux/amd64'
       working-directory: ${{ inputs.app-working-directory }}
       run: wails3 package
       shell: bash
     - name: Build Windows App
-      if: inputs.build == 'true' && runner.os == 'Windows' && inputs.nsis == 'false'
+      if: inputs.build == 'true' && inputs.build-platform == 'windows/amd64' && inputs.nsis == 'false'
       working-directory: ${{ inputs.app-working-directory }}
       run: wails3 build
       shell: bash
     - name: Build Windows App + Installer
-      if: inputs.build == 'true' && runner.os == 'Windows' && inputs.nsis == 'true'
+      if: inputs.build == 'true' && inputs.build-platform == 'windows/amd64' && inputs.nsis == 'true'
       working-directory: ${{ inputs.app-working-directory }}
       run: wails3 package
+      shell: bash
+    - name: Build App
+      if: inputs.build == 'true' && inputs.build-platform == 'darwin/arm64'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: ARCH=arm64 wails3 package
+      shell: bash
+    - name: Build App
+      if: inputs.build == 'true' && inputs.build-platform == 'linux/arm64'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: ARCH=arm64 wails3 package
+      shell: bash
+    - name: Build Windows App
+      if: inputs.build == 'true' && inputs.build-platform == 'windows/arm64' && inputs.nsis == 'false'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: ARCH=arm64 wails3 build
+      shell: bash
+    - name: Build Windows App + Installer
+      if: inputs.build == 'true' && inputs.build-platform == 'windows/arm64' && inputs.nsis == 'true'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: ARCH=arm64 wails3 package
       shell: bash
     - name: Add macOS perms
       if: inputs.build == 'true' && runner.os == 'macOS'
@@ -299,11 +319,11 @@ runs:
       with:
         name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.build-name}}
         path: |
-          */bin/publish/*
-          *\bin\publish\*
+          */publish/
+          *\publish\*
     # - name: Release
     #   uses: softprops/action-gh-release@v2
     #   if: inputs.package == 'true' && startsWith(github.ref, 'refs/tags/')
     #   with:
     #     files: |
-    #       */bin/publish/*
+    #       */publish/*
