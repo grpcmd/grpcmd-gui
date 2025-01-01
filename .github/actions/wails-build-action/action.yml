@@ -249,7 +249,7 @@ runs:
       run: |
         mkdir bin/publish
         tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-arm64.tar.gz" 'bin/${{ inputs.build-name }}'
-        mv 'bin/${{ inputs.build-name }}-aarch64.AppImage' 'bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-aarch64.AppImage' 
+        mv 'bin/${{ inputs.build-name }}-aarch64.AppImage' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-aarch64.AppImage"
     - name: Prepare Windows amd64 Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/amd64'

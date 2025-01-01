@@ -104,3 +104,4 @@ runs:
       run: security delete-keychain $RUNNER_TEMP/notarization.keychain
       shell: bash
       continue-on-error: true
+      
