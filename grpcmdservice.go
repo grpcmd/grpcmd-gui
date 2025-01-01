@@ -72,7 +72,17 @@ func (g *GrpcmdService) MethodTemplate(address, method string) string {
 }
 
 func parseHeadersAndBodyFromFullRequest(req string) ([]string, string, error) {
-	reader := bufio.NewReader(strings.NewReader("\n" + req)) // Prepend newline to avoid error when no headers in request.
+	reqTrimmed := strings.TrimSpace(req)
+	if len(reqTrimmed) == 0 {
+		return nil, "", nil
+	}
+	startOfFirstMessage := strings.Index(req, "{")
+	if len(strings.TrimSpace(req[0:startOfFirstMessage])) == 0 {
+		// If there is only whitespace before the start of the first message, there are no headers.
+		return nil, req, nil
+	}
+
+	reader := bufio.NewReader(strings.NewReader(reqTrimmed))
 	tp := textproto.NewReader(reader)
 	mimeHeader, err := tp.ReadMIMEHeader()
 	if err != nil {
