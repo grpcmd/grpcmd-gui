@@ -36,7 +36,7 @@ tasks:
       - task: install:frontend:deps
       - task: generate:bindings
     cmds:
-      - npm run build -q
+      - npm run build:prod -q
 
   generate:bindings:
     summary: Generates bindings for the frontend
@@ -48,6 +48,8 @@ tasks:
       - "frontend/bindings/**/*"
     cmds:
       - wails3 generate bindings -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}}
+      # Fix typescript errors.
+      - "sed '-i' '' '-e' 's|($result) => {|($result: any) => {|g' ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts"
 
   generate:icons:
     summary: Generates Windows `.ico` and Mac `.icns` files from an image

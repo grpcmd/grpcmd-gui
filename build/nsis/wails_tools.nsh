@@ -5,22 +5,25 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME "grpcmd"
+    !define INFO_PROJECTNAME "grpcmd-gui"
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "My Company"
+    !define INFO_COMPANYNAME "grpcmd"
 !endif
 !ifndef INFO_PRODUCTNAME
-    !define INFO_PRODUCTNAME "My Product"
+    !define INFO_PRODUCTNAME "grpcmd-gui"
+!endif
+!ifndef INFO_PRODUCTNAMESHORT
+    !define INFO_PRODUCTNAMESHORT "grpcmd"
 !endif
 !ifndef INFO_PRODUCTVERSION
     !define INFO_PRODUCTVERSION "0.1.0"
 !endif
 !ifndef INFO_COPYRIGHT
-    !define INFO_COPYRIGHT "© now, My Company"
+    !define INFO_COPYRIGHT "© 2025, Akshay Kalose"
 !endif
 !ifndef PRODUCT_EXECUTABLE
-    !define PRODUCT_EXECUTABLE "${INFO_PROJECTNAME}.exe"
+    !define PRODUCT_EXECUTABLE "${INFO_PRODUCTNAMESHORT}.exe"
 !endif
 !ifndef UNINST_KEY_NAME
     !define UNINST_KEY_NAME "${INFO_COMPANYNAME}${INFO_PRODUCTNAME}"

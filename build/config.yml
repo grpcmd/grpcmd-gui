@@ -5,13 +5,13 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
-  companyName: "My Company" # The name of the company
-  productName: "My Product" # The name of the application
-  productIdentifier: "com.mycompany.myproduct" # The unique product identifier
-  description: "A program that does X" # The application description
-  copyright: "(c) 2024, My Company" # Copyright text
-  comments: "Some Product Comments" # Comments
-  version: "v0.0.1" # The application version
+  companyName: "grpcmd" # The name of the company
+  productName: "grpcmd-gui" # The name of the application
+  productIdentifier: "md.grpc.gui" # The unique product identifier
+  description: "" # The application description
+  copyright: "(c) 2025, Akshay Kalose" # Copyright text
+  comments: "" # Comments
+  version: "v0.1.0" # The application version
 
 # Dev mode configuration
 dev_mode:

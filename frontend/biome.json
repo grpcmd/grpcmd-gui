@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["bindings/"]
+    "ignore": ["bindings/", "components/ui/"]
   },
   "formatter": {
     "enabled": true,
@@ -19,7 +19,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": {
+          "level": "error",
+          "fix": "none"
+        }
+      }
     }
   },
   "javascript": {

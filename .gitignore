@@ -1,2 +1,4 @@
 .task/
 bin/
+
+.DS_Store

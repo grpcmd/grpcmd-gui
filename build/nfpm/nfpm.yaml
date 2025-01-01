@@ -3,17 +3,17 @@
 #
 # The lines below are called `modelines`. See `:help modeline`
 
-name: "grpcmd"
+name: "grpcmd-gui"
 arch: ${GOARCH}
 platform: "linux"
 version: "0.1.0"
 section: "default"
 priority: "extra"
 maintainer: ${GIT_COMMITTER_NAME} <${GIT_COMMITTER_EMAIL}>
-description: "My Product Description"
-vendor: "My Company"
-homepage: "https://wails.io"
-license: "MIT"
+description: ""
+vendor: "grpcmd"
+homepage: "https://grpc.md"
+license: "AGPLv3"
 release: "1"
 
 contents:
