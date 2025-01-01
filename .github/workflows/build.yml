@@ -1,7 +1,10 @@
 name: Wails build
 
 on:
-  pull_request:
+  push:
+    tags:
+      # Match any new tag starting with v
+      - 'v*'
 
 env:
   # Necessary for most environments as build failure can occur due to OOM issues
@@ -60,4 +63,3 @@ jobs:
           sign-macos-apple-team-id: ${{ secrets.APPLE_TEAM_ID }}
           p12-file-base64: ${{ secrets.P12_FILE_BASE64 }}
           p12-password: ${{ secrets.P12_PASSWORD }}
-          
