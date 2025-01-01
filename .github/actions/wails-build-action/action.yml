@@ -43,7 +43,7 @@ inputs:
   node-version:
     description: "Node js version"
     required: false
-    default: "16.x"
+    default: "22.x"
   deno-build:
     description: "This gets run into bash, use the full command"
     required: false
@@ -143,13 +143,13 @@ runs:
       working-directory: ${{inputs.deno-working-directory}}
       run: ${{inputs.deno-build}}
     # install wails
-    - name: Install Wails
-      if: inputs.build == 'true'
-      run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{inputs.wails-version}}
-      shell: bash
     - name: Install Linux Wails deps
       if: inputs.build == 'true' && runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install libgtk-3-0 libwebkit2gtk-4.0-dev gcc-aarch64-linux-gnu
+      shell: bash
+    - name: Install Wails
+      if: inputs.build == 'true'
+      run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{inputs.wails-version}}
       shell: bash
     # Building step
     - name: Build App
