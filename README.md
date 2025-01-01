@@ -2,8 +2,9 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/grpcmd/grpcmd-gui)](https://goreportcard.com/report/github.com/grpcmd/grpcmd-gui)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/grpcmd/grpcmd-gui)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/grpcmd/grpcmd-gui/test.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/grpcmd/grpcmd-gui/build.yml)
 ![GitHub Release](https://img.shields.io/github/v/release/grpcmd/grpcmd-gui)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads-pre/grpcmd/grpcmd-gui/total)
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads-pre/grpcmd/grpcmd-gui/latest/total)
 
 [*(If you're looking for a gRPC CLI tool, check out: **grpcmd**)*](https://github.com/grpcmd/grpcmd)
