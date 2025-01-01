@@ -210,7 +210,7 @@ runs:
         echo "Signing Installer" & 'C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /f certificate\certificate.pfx /p '${{ inputs.sign-windows-cert-password }}' '.\build\bin\${{inputs.build-name}}-amd64-installer.exe'
 
     # Upload build assets
-    - name: Prepare Linux Release Builds
+    - name: Prepare Linux amd64 Release Builds
       shell: bash
       if: inputs.build-platform == 'linux/amd64'
       working-directory: ${{ inputs.app-working-directory }}
@@ -224,7 +224,21 @@ runs:
         ls bin
         echo c
         ls bin/publish
-    - name: Prepare Windows Release Builds
+    - name: Prepare Linux arm64 Release Builds
+      shell: bash
+      if: inputs.build-platform == 'linux/arm64'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: |
+        mkdir bin/publish
+        tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-linux-arm64.tar.gz" 'bin/${{ inputs.build-name }}'
+        mv 'bin/${{ inputs.build-name }}-aarch64.AppImage' 'bin/publish/${{ inputs.build-name }}-gui-linux-aarch64.AppImage' 
+        echo a
+        ls
+        echo b
+        ls bin
+        echo c
+        ls bin/publish
+    - name: Prepare Windows amd64 Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/amd64'
       working-directory: ${{ inputs.app-working-directory }}
@@ -238,14 +252,42 @@ runs:
         ls bin
         echo c
         ls bin/publish
-    - name: Prepare macOS Release Builds
-      shell: bash
-      if: inputs.build-platform == 'darwin/universal'
+    - name: Prepare Windows arm64 Release Builds
+      shell: powershell
+      if: inputs.build-platform == 'windows/arm64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-macOS-universal.app.zip"
-        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-macOS-universal-installer.dmg"
+        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui-windows-arm64.zip'.replace(' ', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-arm64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui-windows-arm64-installer.exe'.replace(' ', '-')
+        echo a
+        ls
+        echo b
+        ls bin
+        echo c
+        ls bin/publish
+    - name: Prepare macOS arm64 Release Builds
+      shell: bash
+      if: inputs.build-platform == 'darwin/arm64'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: |
+        mkdir bin/publish
+        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-darwin-arm64.app.zip"
+        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-darwin-arm64-installer.dmg"
+        echo a
+        ls
+        echo b
+        ls bin
+        echo c
+        ls bin/publish
+    - name: Prepare macOS amd64 Release Builds
+      shell: bash
+      if: inputs.build-platform == 'darwin/amd64'
+      working-directory: ${{ inputs.app-working-directory }}
+      run: |
+        mkdir bin/publish
+        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-darwin-amd64.app.zip"
+        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")-darwin-amd64-installer.dmg"
         echo a
         ls
         echo b
@@ -257,8 +299,8 @@ runs:
       with:
         name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.build-name}}
         path: |
-          bin/publish/*
-          bin\publish\*
+          */bin/publish/*
+          *\bin\publish\*
     # - name: Release
     #   uses: softprops/action-gh-release@v2
     #   if: inputs.package == 'true' && startsWith(github.ref, 'refs/tags/')
