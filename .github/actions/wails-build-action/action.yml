@@ -155,22 +155,22 @@ runs:
     - name: Build App
       if: inputs.build == 'true' && inputs.build-platform == 'darwin/amd64'
       working-directory: ${{ inputs.app-working-directory }}
-      run: wails3 package
+      run: ARCH=amd64 wails3 package
       shell: bash
     - name: Build App
       if: inputs.build == 'true' && inputs.build-platform == 'linux/amd64'
       working-directory: ${{ inputs.app-working-directory }}
-      run: wails3 package
+      run: ARCH=amd64 wails3 package
       shell: bash
     - name: Build Windows App
       if: inputs.build == 'true' && inputs.build-platform == 'windows/amd64' && inputs.nsis == 'false'
       working-directory: ${{ inputs.app-working-directory }}
-      run: wails3 build
+      run: ARCH=amd64 wails3 build
       shell: bash
     - name: Build Windows App + Installer
       if: inputs.build == 'true' && inputs.build-platform == 'windows/amd64' && inputs.nsis == 'true'
       working-directory: ${{ inputs.app-working-directory }}
-      run: wails3 package
+      run: ARCH=amd64 wails3 package
       shell: bash
     - name: Build App
       if: inputs.build == 'true' && inputs.build-platform == 'darwin/arm64'
@@ -317,7 +317,7 @@ runs:
     - uses: actions/upload-artifact@v4
       if: inputs.package == 'true'
       with:
-        name: Wails Build ${{inputs.build-platform}} ${{inputs.build-name}}
+        name: Wails Build ${{runner.os}} ${{runner.arch}} ${{inputs.target-platform-arch}} ${{inputs.build-name}}
         path: |
           */publish/
           *\publish\*
