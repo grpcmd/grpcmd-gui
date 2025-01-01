@@ -21,7 +21,7 @@ jobs:
           - name: 'grpcmd'
             platform:  'linux/arm64'
             platform-arch: 'arm64'
-            os: 'ubuntu-latest'
+            os: 'blacksmith-arm'
           - name: 'grpcmd'
             platform:  'windows/amd64'
             platform-arch: 'amd64'
