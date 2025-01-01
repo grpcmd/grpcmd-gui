@@ -84,19 +84,19 @@ tasks:
   generate:deb:
     summary: Creates a deb package
     cmds: 
-      - mkdir -p {{.ROOT_DIR}}/nfpm/bin
+      - mkdir -p {{.ROOT_DIR}}/build/nfpm/bin
       - wails3 tool package -name {{.APP_NAME}} -format deb -config ./build/nfpm/nfpm.yaml
 
   generate:rpm:
     summary: Creates a rpm package
     cmds: 
-      - mkdir -p {{.ROOT_DIR}}/nfpm/bin
+      - mkdir -p {{.ROOT_DIR}}/build/nfpm/bin
       - wails3 tool package -name {{.APP_NAME}} -format rpm -config ./build/nfpm/nfpm.yaml
 
   generate:aur:
     summary: Creates a arch linux packager package
     cmds: 
-      - mkdir -p {{.ROOT_DIR}}/nfpm/bin
+      - mkdir -p {{.ROOT_DIR}}/build/nfpm/bin
       - wails3 tool package -name {{.APP_NAME}} -format archlinux -config ./build/nfpm/nfpm.yaml
 
   generate:dotdesktop:
