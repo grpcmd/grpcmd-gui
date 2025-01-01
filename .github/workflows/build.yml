@@ -1,0 +1,65 @@
+name: Wails build
+
+on:
+  push:
+    tags:
+      # Match any new tag starting with v
+      - 'v*'
+
+env:
+  # Necessary for most environments as build failure can occur due to OOM issues
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  build:
+    strategy:
+      # Failure in one platform build won't impact the others
+      fail-fast: false
+      matrix:
+        build:
+          - name: 'grpcmd'
+            platform:  'linux/amd64'
+            platform-arch: 'amd64'
+            os: 'ubuntu-latest'
+          - name: 'grpcmd'
+            platform:  'linux/arm64'
+            platform-arch: 'arm64'
+            os: 'blacksmith-arm'
+          - name: 'grpcmd'
+            platform:  'windows/amd64'
+            platform-arch: 'amd64'
+            os: 'windows-latest'
+          - name: 'grpcmd'
+            platform:  'windows/arm64'
+            platform-arch: 'arm64'
+            os: 'windows-latest'
+          - name: 'grpcmd'
+            platform:  'darwin/amd64'
+            platform-arch: 'amd64'
+            os: 'macos-latest'
+          - name: 'grpcmd'
+            platform:  'darwin/arm64'
+            platform-arch: 'arm64'
+            os: 'macos-latest'
+
+    runs-on: ${{ matrix.build.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Build wails
+        uses: ./.github/actions/wails-build-action
+        id: build
+        with:
+          build-name: ${{ matrix.build.name }}
+          build-platform: ${{ matrix.build.platform }}
+          build-platform-arch: ${{ matrix.build.platform-arch }}
+          package: true
+          go-version: '1.23'
+          sign-macos-apple-id: ${{ secrets.APPLE_ID }}
+          sign-macos-apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
+          sign-macos-apple-team-id: ${{ secrets.APPLE_TEAM_ID }}
+          p12-file-base64: ${{ secrets.P12_FILE_BASE64 }}
+          p12-password: ${{ secrets.P12_PASSWORD }}
