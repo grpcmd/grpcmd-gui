@@ -240,48 +240,48 @@ runs:
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_linux-amd64.tar.gz" 'bin/${{ inputs.build-name }}'
-        mv 'bin/${{ inputs.build-name }}-x86_64.AppImage' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_linux-x86_64.AppImage' 
+        tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-amd64.tar.gz" 'bin/${{ inputs.build-name }}'
+        mv 'bin/${{ inputs.build-name }}-x86_64.AppImage' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-x86_64.AppImage"
     - name: Prepare Linux arm64 Release Builds
       shell: bash
       if: inputs.build-platform == 'linux/arm64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_linux-arm64.tar.gz" 'bin/${{ inputs.build-name }}'
-        mv 'bin/${{ inputs.build-name }}-aarch64.AppImage' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_linux-aarch64.AppImage' 
+        tar -czvf "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-arm64.tar.gz" 'bin/${{ inputs.build-name }}'
+        mv 'bin/${{ inputs.build-name }}-aarch64.AppImage' 'bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")linux-aarch64.AppImage' 
     - name: Prepare Windows amd64 Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/amd64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64.zip'.replace(' ', '-')
-        mv 'bin/${{ inputs.build-name }}-gui-amd64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64-installer.exe'.replace(' ', '-')
+        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64.zip'.replace(' ', '-').replace('/', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-amd64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64-installer.exe'.replace(' ', '-').replace('/', '-')
     - name: Prepare Windows arm64 Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/arm64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64.zip'.replace(' ', '-')
-        mv 'bin/${{ inputs.build-name }}-gui-arm64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64-installer.exe'.replace(' ', '-')
+        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64.zip'.replace(' ', '-').replace('/', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-arm64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64-installer.exe'.replace(' ', '-').replace('/', '-')
     - name: Prepare macOS arm64 Release Builds
       shell: bash
       if: inputs.build-platform == 'darwin/arm64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_darwin-arm64.app.zip"
-        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_darwin-arm64-installer.dmg"
+        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")darwin-arm64.app.zip"
+        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")darwin-arm64-installer.dmg"
     - name: Prepare macOS amd64 Release Builds
       shell: bash
       if: inputs.build-platform == 'darwin/amd64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_darwin-amd64.app.zip"
-        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui" | sed "s/ /-/g")_${{ github.ref_name }}_darwin-amd64-installer.dmg"
+        mv 'bin/${{ inputs.build-name }}.app.zip' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")darwin-amd64.app.zip"
+        mv 'bin/${{ inputs.build-name }}.dmg' "bin/publish/$(echo "${{ inputs.build-name }}-gui_${{ github.ref_name }}_" | sed "s/ /-/g" | sed "s|/|-|g")darwin-amd64-installer.dmg"
     - uses: actions/upload-artifact@v4
       if: inputs.package == 'true'
       with:
