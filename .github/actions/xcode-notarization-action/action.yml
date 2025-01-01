@@ -65,13 +65,13 @@ runs:
         p12-password: ${{ inputs.p12-password }}
     - name: Codesign ${{ inputs.build-name }}.app
       run: |
-        codesign -f -s "${{ inputs.team-id }}" -o runtime --keychain "${KEYCHAIN_PATH}" './build/bin/${{ inputs.build-name }}.app'
+        codesign -f -s "${{ inputs.team-id }}" -o runtime --keychain "${KEYCHAIN_PATH}" './bin/${{ inputs.build-name }}.app'
       shell: bash
     - name: Create and codesign ${{ inputs.build-name }}.dmg
       run: |
         brew install create-dmg
-        mkdir ./build/bin/dmg-workspace
-        ditto './build/bin/${{ inputs.build-name }}.app' './build/bin/dmg-workspace/${{ inputs.build-name }}.app' 
+        mkdir ./bin/dmg-workspace
+        ditto './bin/${{ inputs.build-name }}.app' './bin/dmg-workspace/${{ inputs.build-name }}.app' 
         create-dmg \
           --volname "Install ${{ inputs.build-name }}" \
           --window-pos 200 120 \
@@ -81,23 +81,23 @@ runs:
           --hide-extension "${{ inputs.build-name }}.app" \
           --app-drop-link 600 185 \
           --codesign "${{ inputs.team-id }}" \
-          "./build/bin/${{ inputs.build-name }}.dmg" \
-          "./build/bin/dmg-workspace"
+          "./bin/${{ inputs.build-name }}.dmg" \
+          "./bin/dmg-workspace"
       shell: bash
     - name: Notarize ${{ inputs.build-name }}.dmg
       run: |
         KEYCHAIN_PATH=$RUNNER_TEMP/notarization.keychain
-        xcrun notarytool submit './build/bin/${{ inputs.build-name }}.dmg' --keychain-profile "${{ inputs.keychain-profile }}" --keychain "${KEYCHAIN_PATH}" --wait
+        xcrun notarytool submit './bin/${{ inputs.build-name }}.dmg' --keychain-profile "${{ inputs.keychain-profile }}" --keychain "${KEYCHAIN_PATH}" --wait
       shell: bash
     - name: Staple ${{ inputs.build-name }}.dmg
       if: ${{ inputs.staple == 'true' }}
-      run: xcrun stapler staple './build/bin/${{ inputs.build-name }}.dmg'
+      run: xcrun stapler staple './bin/${{ inputs.build-name }}.dmg'
       shell: bash
     - name: Staple .app and create ${{ inputs.build-name }}.app.zip
       if: ${{ inputs.staple == 'true' }}
       run: |
-        xcrun stapler staple './build/bin/${{ inputs.build-name }}.app'
-        ditto -c -k --keepParent './build/bin/${{inputs.build-name}}.app' './build/bin/${{inputs.build-name}}.app.zip'
+        xcrun stapler staple './bin/${{ inputs.build-name }}.app'
+        ditto -c -k --keepParent './bin/${{inputs.build-name}}.app' './bin/${{inputs.build-name}}.app.zip'
       shell: bash
     - name: Cleanup
       if: ${{ always() }}
