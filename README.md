@@ -7,6 +7,8 @@
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads-pre/grpcmd/grpcmd-gui/total)
 ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads-pre/grpcmd/grpcmd-gui/latest/total)
 
+grpcmd-gui is a modern cross-platform desktop app for gRPC API development and testing.
+
 [*(If you're looking for a gRPC CLI tool, check out: **grpcmd**)*](https://github.com/grpcmd/grpcmd)
 
 ## Demo
