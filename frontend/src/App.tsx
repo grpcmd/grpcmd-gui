@@ -1,11 +1,14 @@
 import './App.css'
+import AppLayout from './components/app-layout'
 import HttpClient from './components/http-client'
 import './userWorker'
 
 function App() {
   return (
     <>
-      <HttpClient />
+      <AppLayout>
+        <HttpClient />
+      </AppLayout>
     </>
   )
 }

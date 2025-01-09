@@ -21,7 +21,7 @@ import { GrpcmdService } from '../../bindings/github.com/grpcmd/grpcmd-gui'
 type SelectMethodProps = {
   address: string
   method: string
-  setMethod: React.Dispatch<React.SetStateAction<string>>
+  setMethod: (method: string) => void
 }
 
 type Option = {

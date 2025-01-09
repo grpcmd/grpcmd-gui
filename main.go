@@ -46,7 +46,9 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Title: "grpcmd",
+		Title:  "grpcmd",
+		Width:  1000,
+		Height: 625,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
