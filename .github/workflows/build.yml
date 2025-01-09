@@ -1,10 +1,7 @@
 name: Wails build
 
 on:
-  push:
-    tags:
-      # Match any new tag starting with v
-      - 'v*'
+  pull_request:
 
 env:
   # Necessary for most environments as build failure can occur due to OOM issues
@@ -17,14 +14,14 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - name: 'grpcmd'
-            platform:  'linux/amd64'
-            platform-arch: 'amd64'
-            os: 'ubuntu-latest'
-          - name: 'grpcmd'
-            platform:  'linux/arm64'
-            platform-arch: 'arm64'
-            os: 'blacksmith-arm'
+          # - name: 'grpcmd'
+          #   platform:  'linux/amd64'
+          #   platform-arch: 'amd64'
+          #   os: 'ubuntu-latest'
+          # - name: 'grpcmd'
+          #   platform:  'linux/arm64'
+          #   platform-arch: 'arm64'
+          #   os: 'blacksmith-arm'
           - name: 'grpcmd'
             platform:  'windows/amd64'
             platform-arch: 'amd64'
@@ -33,14 +30,14 @@ jobs:
             platform:  'windows/arm64'
             platform-arch: 'arm64'
             os: 'windows-latest'
-          - name: 'grpcmd'
-            platform:  'darwin/amd64'
-            platform-arch: 'amd64'
-            os: 'macos-latest'
-          - name: 'grpcmd'
-            platform:  'darwin/arm64'
-            platform-arch: 'arm64'
-            os: 'macos-latest'
+          # - name: 'grpcmd'
+          #   platform:  'darwin/amd64'
+          #   platform-arch: 'amd64'
+          #   os: 'macos-latest'
+          # - name: 'grpcmd'
+          #   platform:  'darwin/arm64'
+          #   platform-arch: 'arm64'
+          #   os: 'macos-latest'
 
     runs-on: ${{ matrix.build.os }}
     steps:

@@ -256,16 +256,16 @@ runs:
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64.zip'.replace(' ', '-').replace('/', '-')
-        mv 'bin/${{ inputs.build-name }}-gui-amd64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64-installer.exe'.replace(' ', '-').replace('/', '-')
+        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin\publish\${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64.zip'.replace(' ', '-').replace('/', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-amd64-installer.exe' 'bin\publish\${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-amd64-installer.exe'.replace(' ', '-').replace('/', '-')
     - name: Prepare Windows arm64 Release Builds
       shell: powershell
       if: inputs.build-platform == 'windows/arm64'
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         mkdir bin/publish
-        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64.zip'.replace(' ', '-').replace('/', '-')
-        mv 'bin/${{ inputs.build-name }}-gui-arm64-installer.exe' 'bin/publish/${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64-installer.exe'.replace(' ', '-').replace('/', '-')
+        Compress-Archive -Path 'bin/${{ inputs.build-name }}.exe' -DestinationPath 'bin\publish\${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64.zip'.replace(' ', '-').replace('/', '-')
+        mv 'bin/${{ inputs.build-name }}-gui-arm64-installer.exe' 'bin\publish\${{ inputs.build-name }}-gui_${{ github.ref_name }}_windows-arm64-installer.exe'.replace(' ', '-').replace('/', '-')
     - name: Prepare macOS arm64 Release Builds
       shell: bash
       if: inputs.build-platform == 'darwin/arm64'
