@@ -21,6 +21,9 @@ grpcmd-gui is a modern cross-platform desktop app for gRPC API development and t
 - Supports generating a request template in JSON.
 - Supports streaming request and response messages.
 - Supports customization via multiple themes.
+- Supports multiple requests per window session.
+- Supports keyboard shortcuts (such as `Cmd/Ctrl + T` to create a new request).
+- Supports collapsing the sidebar and resizing the panels.
 
 ## Installation
 

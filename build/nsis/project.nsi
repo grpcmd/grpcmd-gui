@@ -22,7 +22,7 @@ Unicode true
 ## !define INFO_PROJECTNAME    "my-project" # Default "grpcmd-gui"
 ## !define INFO_COMPANYNAME    "My Company" # Default "grpcmd"
 ## !define INFO_PRODUCTNAME    "My Product Name" # Default "grpcmd-gui"
-## !define INFO_PRODUCTVERSION "1.0.0"     # Default "0.1.0"
+## !define INFO_PRODUCTVERSION "1.0.0"     # Default "0.2.0"
 ## !define INFO_COPYRIGHT      "(c) Now, My Company" # Default "© 2025, Akshay Kalose"
 ###
 ## !define PRODUCT_EXECUTABLE  "Application.exe"      # Default "${INFO_PRODUCTNAMESHORT}.exe"
