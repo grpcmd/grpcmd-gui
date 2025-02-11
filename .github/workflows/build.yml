@@ -1,10 +1,7 @@
 name: Wails build
 
 on:
-  push:
-    tags:
-      # Match any new tag starting with v
-      - 'v*'
+  pull_request:
 
 env:
   # Necessary for most environments as build failure can occur due to OOM issues
@@ -24,7 +21,7 @@ jobs:
           - name: 'grpcmd'
             platform:  'linux/arm64'
             platform-arch: 'arm64'
-            os: 'blacksmith-arm'
+            os: 'ubuntu-latest-arm'
           - name: 'grpcmd'
             platform:  'windows/amd64'
             platform-arch: 'amd64'
