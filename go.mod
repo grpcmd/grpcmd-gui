@@ -6,7 +6,7 @@ require (
 	github.com/fullstorydev/grpcurl v1.9.2
 	github.com/golang/protobuf v1.5.4
 	github.com/jhump/protoreflect v1.17.0
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.9
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.8.3
 	google.golang.org/grpc v1.69.2
 )
 
@@ -46,7 +46,7 @@ require (
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.2.2 // indirect
-	github.com/wailsapp/go-webview2 v1.0.19 // indirect
+	github.com/wailsapp/go-webview2 v1.0.18 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.28.0 // indirect
@@ -59,6 +59,5 @@ require (
 	golang.org/x/tools v0.23.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241015192408-796eee8c2d53 // indirect
 	google.golang.org/protobuf v1.35.1 // indirect
-	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
