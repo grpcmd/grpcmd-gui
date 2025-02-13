@@ -20,6 +20,7 @@ var assets embed.FS
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
 // logs any error that might occur.
 func main() {
+	configService := NewConfigService()
 
 	// Create a new Wails application by providing the necessary options.
 	// Variables 'Name' and 'Description' are for application metadata.
@@ -31,6 +32,8 @@ func main() {
 		Description: "",
 		Services: []application.Service{
 			application.NewService(&GrpcmdService{}),
+			application.NewService(configService),
+			application.NewService(&ProtoService{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -57,6 +60,11 @@ func main() {
 		BackgroundColour: application.NewRGB(27, 38, 54),
 		URL:              "/",
 	})
+
+	close := configService.OnConfigChange(func(key string) {
+		app.EmitEvent("configChanged:" + key)
+	})
+	defer close()
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.

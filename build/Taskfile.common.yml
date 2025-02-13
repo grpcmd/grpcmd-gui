@@ -50,6 +50,7 @@ tasks:
       - wails3 generate bindings -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}}
       # Fix typescript errors.
       - "sed -i.bak 's|($result) => {|($result: any) => {|g' ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts"
+      - "sed -i.bak 's|($result) => {|($result: any) => {|g' ./frontend/bindings/github.com/grpcmd/grpcmd-gui/protoservice.ts"
       - rm ./frontend/bindings/github.com/grpcmd/grpcmd-gui/grpcmdservice.ts.bak
 
   generate:icons:

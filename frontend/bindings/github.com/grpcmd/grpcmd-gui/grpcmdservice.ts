@@ -9,8 +9,8 @@ import {Call as $Call, Create as $Create} from "@wailsio/runtime";
 // @ts-ignore: Unused imports
 import * as grpcmd$0 from "./internal/grpcmd/models.js";
 
-export function CallWithResult(address: string, method: string, req: string): Promise<grpcmd$0.Result> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(913647537, address, method, req) as any;
+export function CallWithResult(address: string, method: string, req: string, protoPaths: string[], protoFiles: string[]): Promise<grpcmd$0.Result> & { cancel(): void } {
+    let $resultPromise = $Call.ByID(913647537, address, method, req, protoPaths, protoFiles) as any;
     let $typingPromise = $resultPromise.then(($result: any) => {
         return $$createType0($result);
     }) as any;

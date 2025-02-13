@@ -20,8 +20,7 @@ import (
 type GrpcmdContext struct {
 	_ctx       context.Context
 	_cc        *grpc.ClientConn
-	_refClient *grpcreflect.Client
-	_refSource grpcurl.DescriptorSource
+	_dscSource grpcurl.DescriptorSource
 
 	_services              []string
 	_methods               []string
@@ -44,6 +43,34 @@ func (ctx *GrpcmdContext) Free() {
 	}
 }
 
+func (ctx *GrpcmdContext) SetFileSource(protoFiles, protoPaths []string) error {
+	fileSource, err := grpcurl.DescriptorSourceFromProtoFiles(
+		// Deduplication is required because for some reason the following command parses duplicate flags.
+		// $ grpc __complete --protos ./proto/grpcmd_service.proto :50051 UnaryMethod
+		removeDuplicates(protoPaths),
+		removeDuplicates(protoFiles)...,
+	)
+	if err != nil {
+		return err
+	}
+	ctx._dscSource = fileSource
+	return nil
+}
+
+func removeDuplicates[T comparable](slice []T) []T {
+	unique := make([]T, 0, len(slice))
+	seen := make(map[T]bool)
+
+	for _, value := range slice {
+		if !seen[value] {
+			seen[value] = true
+			unique = append(unique, value)
+		}
+	}
+
+	return unique
+}
+
 func (ctx *GrpcmdContext) Connect(address string) error {
 	var cancel context.CancelFunc
 	ctx._ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
@@ -56,9 +83,12 @@ func (ctx *GrpcmdContext) Connect(address string) error {
 	}
 	ctx.deferCall(func() { ctx._cc.Close() })
 
-	ctx._refClient = grpcreflect.NewClientAuto(ctx._ctx, ctx._cc)
-	ctx.deferCall(ctx._refClient.Reset)
-	ctx._refSource = grpcurl.DescriptorSourceFromServer(ctx._ctx, ctx._refClient)
+	if ctx._dscSource == nil {
+		refClient := grpcreflect.NewClientAuto(ctx._ctx, ctx._cc)
+		ctx.deferCall(refClient.Reset)
+		refSource := grpcurl.DescriptorSourceFromServer(ctx._ctx, refClient)
+		ctx._dscSource = refSource
+	}
 	return nil
 }
 
@@ -66,7 +96,7 @@ func (ctx *GrpcmdContext) Services() ([]string, error) {
 	if ctx._services != nil {
 		return ctx._services, nil
 	}
-	services, err := grpcurl.ListServices(ctx._refSource)
+	services, err := grpcurl.ListServices(ctx._dscSource)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +113,7 @@ func (ctx *GrpcmdContext) Methods() ([]string, error) {
 		return nil, err
 	}
 	for _, s := range services {
-		methods, err := grpcurl.ListMethods(ctx._refSource, s)
+		methods, err := grpcurl.ListMethods(ctx._dscSource, s)
 		if err != nil {
 			return nil, err
 		}
@@ -153,7 +183,6 @@ func (ctx *GrpcmdContext) findFullyQualifiedMethod(method string) (string, error
 		}
 	}
 	if len(matches) == 0 {
-		// TODO: Consider outputting either the available methods, or the command to run to find the available methods.
 		return "", errors.New("No matching method for: " + method)
 	} else if len(matches) == 1 {
 		return matches[0], nil
@@ -187,11 +216,11 @@ func (ctx *GrpcmdContext) DescribeMethod(method string) (string, error) {
 		return "", err
 	}
 	var output strings.Builder
-	dsc, err := ctx._refSource.FindSymbol(fullyQualifiedMethod)
+	dsc, err := ctx._dscSource.FindSymbol(fullyQualifiedMethod)
 	if err != nil {
 		return "", err
 	}
-	txt, err := grpcurl.GetDescriptorText(dsc, ctx._refSource)
+	txt, err := grpcurl.GetDescriptorText(dsc, ctx._dscSource)
 	if err != nil {
 		return "", err
 	}
@@ -200,14 +229,14 @@ func (ctx *GrpcmdContext) DescribeMethod(method string) (string, error) {
 	output.WriteRune('\n')
 
 	if d, ok := dsc.(*desc.MethodDescriptor); ok {
-		txt, err = grpcurl.GetDescriptorText(d.GetInputType(), ctx._refSource)
+		txt, err = grpcurl.GetDescriptorText(d.GetInputType(), ctx._dscSource)
 		if err != nil {
 			return "", err
 		}
 		output.WriteString(txt)
 		output.WriteRune('\n')
 		output.WriteRune('\n')
-		txt, err = grpcurl.GetDescriptorText(d.GetOutputType(), ctx._refSource)
+		txt, err = grpcurl.GetDescriptorText(d.GetOutputType(), ctx._dscSource)
 		if err != nil {
 			return "", err
 		}
@@ -217,7 +246,7 @@ func (ctx *GrpcmdContext) DescribeMethod(method string) (string, error) {
 
 		tmpl := grpcurl.MakeTemplate(d.GetInputType())
 		options := grpcurl.FormatOptions{EmitJSONDefaultFields: true}
-		_, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._refSource, nil, options)
+		_, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._dscSource, nil, options)
 		if err != nil {
 			return "", err
 		}
@@ -243,7 +272,7 @@ func (ctx *GrpcmdContext) Call(method, data string, headers []string) error {
 		AllowUnknownFields:    false,
 		IncludeTextSeparator:  false,
 	}
-	rp, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._refSource, strings.NewReader(data), options)
+	rp, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._dscSource, strings.NewReader(data), options)
 	if err != nil {
 		return err
 	}
@@ -254,7 +283,7 @@ func (ctx *GrpcmdContext) Call(method, data string, headers []string) error {
 			VerbosityLevel: 0,
 		},
 	}
-	err = grpcurl.InvokeRPC(ctx._ctx, ctx._refSource, ctx._cc, fullyQualifiedMethod, headers, h, rp.Next)
+	err = grpcurl.InvokeRPC(ctx._ctx, ctx._dscSource, ctx._cc, fullyQualifiedMethod, headers, h, rp.Next)
 	if err != nil {
 		if errStatus, ok := status.FromError(err); ok {
 			h.Status = errStatus
@@ -269,8 +298,7 @@ func (ctx *GrpcmdContext) Call(method, data string, headers []string) error {
 		}
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, formattedStatus)
-		// TODO: Do we need to run all the defer functions since os.Exit doesn't?
-		os.Exit(64 + int(h.Status.Code()))
+		return GrpcStatusExitError{Code: 64 + int(h.Status.Code())}
 	}
 	return nil
 }
@@ -291,7 +319,7 @@ func (ctx *GrpcmdContext) CallWithResult(method, data string, headers []string) 
 		AllowUnknownFields:    false,
 		IncludeTextSeparator:  false,
 	}
-	rp, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._refSource, strings.NewReader(data), options)
+	rp, formatter, err := grpcurl.RequestParserAndFormatter(grpcurl.FormatJSON, ctx._dscSource, strings.NewReader(data), options)
 	if err != nil {
 		return nil, err
 	}
@@ -309,7 +337,7 @@ func (ctx *GrpcmdContext) CallWithResult(method, data string, headers []string) 
 			VerbosityLevel: 0,
 		},
 	}
-	err = grpcurl.InvokeRPC(ctx._ctx, ctx._refSource, ctx._cc, fullyQualifiedMethod, headers, h, rp.Next)
+	err = grpcurl.InvokeRPC(ctx._ctx, ctx._dscSource, ctx._cc, fullyQualifiedMethod, headers, h, rp.Next)
 	if err != nil {
 		if errStatus, ok := status.FromError(err); ok {
 			h.Status = errStatus
@@ -324,8 +352,7 @@ func (ctx *GrpcmdContext) CallWithResult(method, data string, headers []string) 
 		}
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, formattedStatus)
-		// TODO: Do we need to run all the defer functions since os.Exit doesn't?
-		os.Exit(64 + int(h.Status.Code()))
+		return nil, GrpcStatusExitError{Code: 64 + int(h.Status.Code())}
 	}
 	return result, nil
 }

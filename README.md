@@ -15,7 +15,7 @@ grpcmd-gui is a modern cross-platform desktop app for gRPC API development and t
 ![Demo](./demo.png)
 
 ## Features
-- Supports fetching methods from reflection.
+- Supports fetching methods from reflection and .proto files.
 - Supports sending request headers.
 - Supports viewing response headers and trailers.
 - Supports generating a request template in JSON.
@@ -24,6 +24,8 @@ grpcmd-gui is a modern cross-platform desktop app for gRPC API development and t
 - Supports multiple requests per window session.
 - Supports keyboard shortcuts (such as `Cmd/Ctrl + T` to create a new request).
 - Supports collapsing the sidebar and resizing the panels.
+- Supports automatic timed deletion of open requests.
+- Supports persisting and live reloading workspace configuration from disk.
 
 ## Installation
 

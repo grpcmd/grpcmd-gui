@@ -22,7 +22,7 @@ const data = {
       subtitle: 'Coming Soon',
     },
     {
-      name: 'microserice-a',
+      name: 'microservice-a',
       logo: AudioWaveform,
       subtitle: 'Coming Soon',
     },
@@ -49,7 +49,7 @@ export function AppLayoutSidebar({
       <SidebarHeader className={System.IsMac() ? 'mt-[30px]' : 'mt-0'}>
         <WorkspaceSwitcher workspaces={data.workspaces} />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent id="sidebar-content">
         <NavMain />
       </SidebarContent>
       <SidebarFooter>

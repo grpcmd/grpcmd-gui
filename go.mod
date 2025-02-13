@@ -3,6 +3,7 @@ module github.com/grpcmd/grpcmd-gui
 go 1.23.0
 
 require (
+	github.com/fsnotify/fsnotify v1.8.0
 	github.com/fullstorydev/grpcurl v1.9.2
 	github.com/golang/protobuf v1.5.4
 	github.com/jhump/protoreflect v1.17.0

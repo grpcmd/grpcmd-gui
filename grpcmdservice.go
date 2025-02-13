@@ -13,7 +13,7 @@ import (
 
 type GrpcmdService struct{}
 
-func (g *GrpcmdService) CallWithResult(address string, method string, req string) grpcmd.Result {
+func (g *GrpcmdService) CallWithResult(address string, method string, req string, protoPaths []string, protoFiles []string) grpcmd.Result {
 	headers, data, err := parseHeadersAndBodyFromFullRequest(req)
 	if err != nil {
 		return grpcmd.Result{
@@ -22,6 +22,14 @@ func (g *GrpcmdService) CallWithResult(address string, method string, req string
 	}
 	ctx := grpcmd.NewContext()
 	defer ctx.Free()
+	if len(protoFiles) > 0 {
+		err := ctx.SetFileSource(protoFiles, getExtendedProtoPaths(protoPaths, protoFiles))
+		if err != nil {
+			return grpcmd.Result{
+				Messages: []string{err.Error()},
+			}
+		}
+	}
 	err = ctx.Connect(address)
 	if err != nil {
 		return grpcmd.Result{
